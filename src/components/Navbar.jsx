@@ -60,10 +60,10 @@ export default function Navbar() {
           {/* AUTH BUTTONS */}
           <div className="flex items-center gap-3">
             <Link
-              href="/login"
+              href="/auth/signin"
               className="text-sm font-medium text-gray-700 transition hover:text-black dark:text-gray-300 dark:hover:text-white"
             >
-              Login
+              Sign In
             </Link>
 
             <Link
@@ -105,10 +105,10 @@ export default function Navbar() {
           {/* MOBILE AUTH */}
           <div className="mt-5 flex flex-col gap-3 border-t border-black/10 pt-5 dark:border-white/10">
             <Link
-              href="/login"
+              href="/auth/signin"
               className="rounded-xl border border-black/10 px-4 py-2 text-center text-sm font-medium transition hover:bg-gray-100 dark:border-white/10 dark:hover:bg-white/10"
             >
-              Login
+              Sign In
             </Link>
 
             <Link

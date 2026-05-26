@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
   Card,
   Button,
@@ -15,18 +16,17 @@ import {
 import {
   Eye,
   EyeSlash,
-  Person,
   At,
   ShieldKeyhole,
   ArrowRight,
 } from "@gravity-ui/icons";
 
-import { signUp } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 
-export default function SignupPage() {
-  const [name, setName] = useState("");
+export default function SigninPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] =
+    useState("");
 
   const [isVisible, setIsVisible] =
     useState(false);
@@ -41,7 +41,7 @@ export default function SignupPage() {
   const toggleVisibility = () =>
     setIsVisible(!isVisible);
 
-  const handleSignup = async (e) => {
+  const handleSignin = async (e) => {
     e.preventDefault();
 
     setError("");
@@ -50,8 +50,7 @@ export default function SignupPage() {
 
     try {
       const { error: authError } =
-        await signUp.email({
-          name,
+        await signIn.email({
           email,
           password,
           callbackURL: "/",
@@ -60,14 +59,13 @@ export default function SignupPage() {
       if (authError) {
         setError(
           authError.message ||
-            "Signup failed."
+            "Invalid credentials."
         );
       } else {
         setSuccess(
-          "Account created successfully!"
+          "Successfully signed in!"
         );
 
-        setName("");
         setEmail("");
         setPassword("");
       }
@@ -83,22 +81,20 @@ export default function SignupPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#030712] px-4 py-10">
 
-      {/* Background Effects */}
+      {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-100px] h-[320px] w-[320px] rounded-full bg-fuchsia-600/20 blur-3xl" />
+        <div className="absolute left-[-120px] top-[-100px] h-[320px] w-[320px] rounded-full bg-violet-600/20 blur-3xl" />
 
         <div className="absolute bottom-[-120px] right-[-100px] h-[300px] w-[300px] rounded-full bg-cyan-500/20 blur-3xl" />
-
-        <div className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-500/10 blur-3xl" />
       </div>
 
-      {/* Grid Overlay */}
+      {/* Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
       {/* Card */}
       <Card className="relative z-10 w-full max-w-md border border-white/10 bg-white/5 p-7 shadow-2xl backdrop-blur-2xl">
 
-        {/* Logo / Badge */}
+        {/* Logo */}
         <div className="mb-6 flex items-center justify-center">
           <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl">
             HireLoop
@@ -108,47 +104,20 @@ export default function SignupPage() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-white">
-            Create Account
+            Welcome Back
           </h1>
 
           <p className="mt-2 text-sm text-zinc-400">
-            Build your professional journey
-            with us.
+            Sign in to continue your
+            professional journey.
           </p>
         </div>
 
         {/* Form */}
         <form
-          onSubmit={handleSignup}
+          onSubmit={handleSignin}
           className="flex flex-col gap-5"
         >
-
-          {/* Name */}
-          <TextField
-            isRequired
-            className="flex flex-col gap-2"
-          >
-            <Label className="text-sm font-medium text-zinc-300">
-              Full Name
-            </Label>
-
-            <InputGroup className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 transition-all focus-within:border-violet-500">
-              <Person
-                size={18}
-                className="text-zinc-500"
-              />
-
-              <Input
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
-                className="w-full border-none bg-transparent py-3 text-sm text-white outline-none"
-              />
-            </InputGroup>
-          </TextField>
 
           {/* Email */}
           <TextField
@@ -198,7 +167,7 @@ export default function SignupPage() {
                     ? "text"
                     : "password"
                 }
-                placeholder="Create password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) =>
                   setPassword(
@@ -243,18 +212,18 @@ export default function SignupPage() {
             isDisabled={isLoading}
             className="mt-2 h-12 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-sm font-semibold text-white transition-all hover:scale-[1.01]"
           >
-            Create Account
+            Sign In
             <ArrowRight size={16} />
           </Button>
 
           {/* Footer */}
           <div className="mt-4 text-center text-sm text-zinc-400">
-            Already have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
-              href="/auth/signin"
+              href="/auth/signup"
               className="font-medium text-violet-400 hover:text-violet-300"
             >
-              Sign in
+              Create account
             </Link>
           </div>
         </form>
