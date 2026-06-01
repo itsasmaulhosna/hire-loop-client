@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import {
   BriefcaseBusiness,
   Building2,
@@ -34,10 +35,33 @@ const stats = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+    },
+  },
+};
+
 export default function StatsSection() {
   return (
     <section
-      className="relative overflow-hidden bg-black py-24"
+      className="relative overflow-hidden py-24"
       style={{
         backgroundImage: "url('/images/globe.png')",
         backgroundSize: "cover",
@@ -45,51 +69,154 @@ export default function StatsSection() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/75" />
+      {/* Background */}
+      <div className="absolute inset-0 bg-black/80" />
 
-      {/* Purple Glow */}
-      <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-600/30 blur-3xl" />
+      {/* Animated Purple Glow */}
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.25, 0.4, 0.25],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-600/30 blur-3xl"
+      />
 
-      {/* Content */}
+      {/* Secondary Glow */}
+      <motion.div
+        animate={{
+          x: [-50, 50, -50],
+          y: [0, 40, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute right-0 top-20 h-[350px] w-[350px] rounded-full bg-fuchsia-500/10 blur-3xl"
+      />
+
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Heading */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
-          <h2 className="text-3xl font-semibold leading-tight text-white md:text-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl font-semibold leading-tight text-white md:text-5xl"
+          >
             Assisting over{" "}
             <span className="text-violet-400">15,000</span> job seekers
             <br />
             find their dream positions.
-          </h2>
+          </motion.h2>
 
-          <p className="mt-6 text-base text-gray-400 md:text-lg">
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+            }}
+            className="mt-6 text-base text-gray-400 md:text-lg"
+          >
             Connecting talented professionals with world-class companies
             through smart hiring solutions.
-          </p>
+          </motion.p>
+
+          {/* Rotating Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{
+              opacity: 1,
+              scale: 1,
+            }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.5,
+              delay: 0.4,
+            }}
+            className="mt-10 flex justify-center"
+          >
+            <motion.div
+              animate={{
+                rotate: 360,
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="flex h-24 w-24 items-center justify-center rounded-full border border-violet-500/30 bg-violet-500/10 text-sm font-medium text-violet-300 backdrop-blur-md"
+            >
+              Remote Job
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {/* Stats Cards */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid gap-6 md:grid-cols-2 xl:grid-cols-4"
+        >
           {stats.map((item) => {
             const Icon = item.icon;
 
             return (
-              <div
+              <motion.div
                 key={item.id}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-violet-500/40 hover:bg-white/[0.06]"
+                variants={cardVariants}
+                whileHover={{
+                  y: -10,
+                  scale: 1.03,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 250,
+                }}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl"
               >
-                {/* Card Glow */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                {/* Hover Glow */}
+                <div className="absolute inset-0 bg-gradient-to-b from-violet-500/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                {/* Icon */}
-                <div className="mb-12 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                {/* Animated Icon */}
+                <motion.div
+                  whileHover={{
+                    rotate: 10,
+                    scale: 1.1,
+                  }}
+                  className="mb-12 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
+                >
                   <Icon className="h-7 w-7 text-white" />
-                </div>
+                </motion.div>
 
                 {/* Number */}
-                <h3 className="mb-2 text-5xl font-bold tracking-tight text-white">
+                <motion.h3
+                  initial={{
+                    opacity: 0,
+                    scale: 0.8,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                  }}
+                  className="mb-2 text-5xl font-bold tracking-tight text-white"
+                >
                   {item.title}
-                </h3>
+                </motion.h3>
 
                 {/* Subtitle */}
                 <p className="text-base text-gray-400">
@@ -98,10 +225,22 @@ export default function StatsSection() {
 
                 {/* Bottom Gradient */}
                 <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white/[0.03] to-transparent" />
-              </div>
+
+                {/* Animated Border */}
+                <motion.div
+                  animate={{
+                    opacity: [0.2, 0.5, 0.2],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                  }}
+                  className="absolute inset-0 rounded-3xl border border-violet-500/10"
+                />
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
