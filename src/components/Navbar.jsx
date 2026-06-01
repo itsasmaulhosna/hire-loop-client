@@ -8,6 +8,12 @@ import {
   X,
   BriefcaseBusiness,
 } from "lucide-react";
+import { signOut, useSession } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+
+const handleSignOut=async()=>{
+await signOut()
+}
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -19,6 +25,9 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const{data:session,isPending}=useSession();
+  // console.log(session,isPending);
+  const user=session?.user;
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-black/10 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-black/40">
@@ -59,12 +68,19 @@ export default function Navbar() {
 
           {/* AUTH BUTTONS */}
           <div className="flex items-center gap-3">
-            <Link
+            {
+              user?
+              <>
+              Hi, {user.name}!
+              <Button variant="outline" size="sm" onClick={handleSignOut}>Sign Out</Button>
+              </>
+              :
+              <Link
               href="/auth/signin"
               className="text-sm font-medium text-gray-700 transition hover:text-black dark:text-gray-300 dark:hover:text-white"
             >
               Sign In
-            </Link>
+            </Link>}
 
             <Link
               href="/register"
