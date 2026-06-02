@@ -22,12 +22,13 @@ import {
 } from "@gravity-ui/icons";
 
 import { signUp } from "@/lib/auth-client";
+import {Description, Radio, RadioGroup} from "@heroui/react";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+const[role,setRole]=useState("seeker");
   const [isVisible, setIsVisible] =
     useState(false);
 
@@ -53,7 +54,9 @@ export default function SignupPage() {
         await signUp.email({
           name,
           email,
+          role,
           password,
+          
           callbackURL: "/",
         });
 
@@ -221,6 +224,36 @@ export default function SignupPage() {
               </button>
             </InputGroup>
           </TextField>
+
+{/* role  */}
+    <div className="flex flex-col gap-4">
+      <Label>Subscription plan</Label>
+      <RadioGroup defaultValue="seeker" name="role" onChange={value=>setRole(value)}  orientation="horizontal">
+        <Radio  value="seeker">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>Job Seeker</Label>
+            
+          </Radio.Content>
+        </Radio>
+        <Radio value="recruiter">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>Recruiter</Label>
+            
+          </Radio.Content>
+        </Radio>
+        
+      </RadioGroup>
+    </div>
+  
+
+
+
 
           {/* Error */}
           {error && (
